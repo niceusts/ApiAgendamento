@@ -76,10 +76,3 @@ public class AgendamentoController : ControllerBase
         }
     }
 }
-
-public class AgendarComHorarioDto
-{
-    public int MedicoId { get; set; }
-    public int HorarioId { get; set; }
-    public int PacienteId { get; set; }
-}
