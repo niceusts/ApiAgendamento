@@ -1,35 +1,35 @@
 # ApiAgendamento
 
-Sistema de Agendamento MÈdico ó Backend (.NET 8 + PostgreSQL + DDD + Clean Architecture)
+Sistema de Agendamento M√©dico ‚Äî Backend (.NET 8 + PostgreSQL + DDD + Clean Architecture)
 
-## Vis„o Geral
+## Vis√£o Geral
 
-Este projeto È uma API REST para agendamento de consultas mÈdicas, seguindo os princÌpios de DDD (Domain-Driven Design) e Clean Architecture.  
-Permite cadastro de mÈdicos e pacientes, gerenciamento de hor·rios disponÌveis, criaÁ„o de agendamentos, autenticaÁ„o segura (JWT) e persistÍncia em banco relacional (PostgreSQL).
+Este projeto √© uma API REST para agendamento de consultas m√©dicas, seguindo os princ√≠pios de DDD (Domain-Driven Design) e Clean Architecture.  
+Permite cadastro de m√©dicos e pacientes, gerenciamento de hor√°rios dispon√≠veis, cria√ß√£o de agendamentos, autentica√ß√£o segura (JWT) e persist√™ncia em banco relacional (PostgreSQL).
 
 ## Arquitetura
 
-- **Domain**: Entidades, regras de negÛcio e interfaces de repositÛrio.
-- **Application**: ServiÁos de aplicaÁ„o (casos de uso).
-- **Infrastructure**: PersistÍncia (EF Core + PostgreSQL), repositÛrios concretos.
-- **Api**: Controllers, autenticaÁ„o, endpoints REST.
+- **Domain**: Entidades, regras de neg√≥cio e interfaces de reposit√≥rio.
+- **Application**: Servi√ßos de aplica√ß√£o (casos de uso).
+- **Infrastructure**: Persist√™ncia (EF Core + PostgreSQL), reposit√≥rios concretos.
+- **Api**: Controllers, autentica√ß√£o, endpoints REST.
 
-## SeguranÁa
+## Seguran√ßa
 
-- AutenticaÁ„o via JWT.
+- Autentica√ß√£o via JWT.
 - Senhas armazenadas com hash seguro (BCrypt).
-- Vari·veis sensÌveis (banco, JWT) em arquivo `.env` (N√O versionar).
+- Vari√°veis sens√≠veis (banco, JWT) em arquivo `.env` (N√ÉO versionar).
 
 ## Como rodar o projeto
 
-### 1. PrÈ-requisitos
+### 1. Pr√©-requisitos
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download)
 - [PostgreSQL](https://www.postgresql.org/download/)
 - [DotNet CLI](https://learn.microsoft.com/pt-br/dotnet/core/tools/)
 - (Opcional) [Visual Studio 2022+](https://visualstudio.microsoft.com/pt-br/)
 
-### 2. Clone o repositÛrio
+### 2. Clone o reposit√≥rio
 
 ```
 git clone https://github.com/seu-usuario/seu-repo.git
@@ -45,7 +45,7 @@ JWT_ISSUER=ApiAgendamento
 JWT_AUDIENCE=ApiAgendamentoUser
 ```
 
-> **Importante:** N„o suba o `.env` para o GitHub!
+> **Importante:** N√£o suba o `.env` para o GitHub!
 
 ### 4. Restaure os pacotes
 
@@ -55,37 +55,43 @@ dotnet restore
 
 ### 5. Crie o banco e as tabelas
 
+rode a vari√°vel de ambiente no terminal
+```
+ Host=localhost;Port=5432;Database=ApiAgendamentoDb;Username=postgres;Password=sua_senha
+
+```
+crie o banco: 
 ```
 dotnet ef database update --project ApiAgendamento/ApiAgendamento.csproj
 ```
 
-### 6. Rode a aplicaÁ„o
+### 6. Rode a aplica√ß√£o
 
 ```
 dotnet run --project ApiAgendamento/ApiAgendamento.csproj
 ```
 
-A API estar· disponÌvel em `https://localhost:5001` ou `http://localhost:5000`.
+A API estar√° dispon√≠vel em `https://localhost:5001` ou `http://localhost:5000`.
 
 ## Endpoints principais
 
-- **AutenticaÁ„o:**  
-  - `POST /api/auth/register` ó Cadastro de usu·rio (mÈdico ou paciente)
-  - `POST /api/auth/login` ó Login (retorna JWT)
-- **MÈdico:**  
-  - `GET /api/medico/{medicoId}/horarios` ó Listar hor·rios do mÈdico
-  - `POST /api/medico/{medicoId}/horarios` ó Adicionar hor·rio disponÌvel
+- **Autentica√ß√£o:**  
+  - `POST /api/auth/register` ‚Äî Cadastro de usu√°rio (m√©dico ou paciente)
+  - `POST /api/auth/login` ‚Äî Login (retorna JWT)
+- **M√©dico:**  
+  - `GET /api/medico/{medicoId}/horarios` ‚Äî Listar hor√°rios do m√©dico
+  - `POST /api/medico/{medicoId}/horarios` ‚Äî Adicionar hor√°rio dispon√≠vel
 - **Paciente:**  
-  - `GET /api/paciente/meus-agendamentos` ó Listar agendamentos do paciente autenticado
+  - `GET /api/paciente/meus-agendamentos` ‚Äî Listar agendamentos do paciente autenticado
 - **Agendamento:**  
-  - `POST /api/agendamento` ó Criar agendamento (autenticado)
+  - `POST /api/agendamento` ‚Äî Criar agendamento (autenticado)
 
 > Todos os endpoints (exceto login e registro) exigem JWT no header:  
 > `Authorization: Bearer <seu_token>`
 
 ## Testes
 
-- Estrutura para testes unit·rios e de integraÁ„o em `/tests` (em produÁ„o).
+- Estrutura para testes unit√°rios e de integra√ß√£o em `/tests` (em produ√ß√£o).
 
 ## Tecnologias
 
@@ -94,4 +100,5 @@ A API estar· disponÌvel em `https://localhost:5001` ou `http://localhost:5000`.
 - PostgreSQL
 - JWT Authentication
 - BCrypt.Net (hash de senha)
-- DotNetEnv (vari·veis de ambiente)
+
+- DotNetEnv (vari√°veis de ambiente)
