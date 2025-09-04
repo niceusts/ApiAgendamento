@@ -1,0 +1,108 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Build Results
+[Dd]ebug/
+[Rr]elease/
+
+# NuGet
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+
+# DotCover
+*.dotCover
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code
+.vscode/
+
+# DotNetEnv
+.env
+
+# Others
+*.log
+*.tlog
+*.cache
+*.pdb
+*.dbmdl
+*.db
+*.sqlite
+*.mdf
+*.ldf
+*.vshost.*
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Test Results
+TestResults/
+
+# NCrunch
+.ncrunch*
+*crunch*.local.xml
+
+# SonarQube
+.sonar/
+
+# Azure Pipelines
+.azure-pipelines/
+
+# Local History for Visual Studio
+.localhistory/
+
+# Backup & Report Files
+*.bak
+*.Backup
+*.Bacpac
+*.trn
+*.log
+*.sql
+*.rdl.data
+*.rdl.designer.cs
+*.rptproj.user
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Rider
+.idea/
+*.sln.iml
+
+# User secrets
+secrets.json
