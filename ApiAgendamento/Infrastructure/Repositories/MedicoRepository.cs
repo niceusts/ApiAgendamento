@@ -36,4 +36,10 @@ public class MedicoRepository : IMedicoRepository
         _context.Medicos.Update(medico);
         await _context.SaveChangesAsync();
     }
+
+    public async Task RemoverAsync(Medico medico)
+    {
+        _context.Medicos.Remove(medico);
+        await _context.SaveChangesAsync();
+    }
 }

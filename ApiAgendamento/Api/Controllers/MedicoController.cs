@@ -7,22 +7,16 @@ namespace ApiAgendamento.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize] // Exige autenticação JWT
+//[Authorize] // Exige autenticação JWT
 public class MedicoController : ControllerBase
 {
     private readonly IMedicoRepository _medicoRepository;
+    private readonly IAgendamentoRepository _agendamentoRepo;
 
-    public MedicoController(IMedicoRepository medicoRepository)
+    public MedicoController(IMedicoRepository medicoRepository, IAgendamentoRepository agendamentoRepository)
     {
         _medicoRepository = medicoRepository;
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CadastrarMedico([FromBody] MedicoDto dto)
-    {
-        var medico = new Medico(dto.Nome, dto.Especialidade);
-        await _medicoRepository.AdicionarAsync(medico);
-        return Ok(medico.Id);
+        _agendamentoRepo = agendamentoRepository;
     }
 
     [HttpPost("{medicoId}/horarios")]
@@ -35,7 +29,30 @@ public class MedicoController : ControllerBase
         {
             medico.AdicionarHorarioDisponivel(dto.Inicio, dto.Fim);
             await _medicoRepository.AtualizarAsync(medico);
-            return Ok();
+            return Ok("Horário adicionado com sucesso");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpDelete("{medicoId}/horarios/{horarioId}/remover")]
+    public async Task<IActionResult> RemoverHorarioDisponivel(int medicoId, int horarioId)
+    {
+        var medico = await _medicoRepository.ObterPorIdAsync(medicoId);
+        if (medico == null)
+            return NotFound("Médico não encontrado.");
+
+        var agenda = await _agendamentoRepo.ObterAgendaId(horarioId);
+        if (agenda != null)
+            return BadRequest("Não é possível remover um horário que já possui agendamentos.");
+
+        try
+        {
+            medico.RemoverHorarioDisponivel(medicoId, horarioId);
+            await _medicoRepository.AtualizarAsync(medico);
+            return Ok("Horário removido com sucesso.");
         }
         catch (Exception ex)
         {
@@ -50,6 +67,24 @@ public class MedicoController : ControllerBase
         if (medico == null)
             return NotFound("Médico não encontrado.");
         return Ok(medico.HorariosDisponiveis);
+    }
+
+    [HttpPatch("{medicoId}/horarios/{horarioId}")]
+    public async Task<IActionResult> AtualizarHorario(int medicoId, int horarioId, [FromBody] HorarioDisponivelDto dto)
+    {
+        var medico = await _medicoRepository.ObterPorIdAsync(medicoId);
+        if (medico == null)
+            return NotFound("Médico não encontrado.");
+        try
+        {
+            medico.AtualizarHorario(medicoId, horarioId, dto.Inicio, dto.Fim);
+            await _medicoRepository.AtualizarAsync(medico);
+            return Ok("Horário atualizado com sucesso.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
 

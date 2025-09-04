@@ -8,4 +8,5 @@ public interface IMedicoRepository
     Task<IEnumerable<Medico>> ObterTodosAsync();
     Task AdicionarAsync(Medico medico);
     Task AtualizarAsync(Medico medico);
+    Task RemoverAsync(Medico medico);
 }

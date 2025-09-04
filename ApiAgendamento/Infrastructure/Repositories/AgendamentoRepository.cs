@@ -13,6 +13,11 @@ public class AgendamentoRepository : IAgendamentoRepository
         _context = context;
     }
 
+    public async Task<Agendamento?> ObterAgendaId(int id)
+    {
+        return await _context.Agendamentos.FirstOrDefaultAsync(a => a.Id == id);
+    }
+
     public async Task<bool> ExisteConflito(int medicoId, DateTime dataHora)
     {
         return await _context.Agendamentos.AnyAsync(a => a.MedicoId == medicoId && a.DataHora == dataHora);
