@@ -68,9 +68,15 @@ public class AuthController : ControllerBase
         if (usuario == null || !BCrypt.Net.BCrypt.Verify(dto.Senha, usuario.SenhaHash))
             return Unauthorized("Usuário ou senha inválidos");
 
-        // Gerar token JWT
-        var jwtSettings = _configuration.GetSection("Jwt");
-        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]!);
+        // Buscar configurações JWT diretamente das variáveis de ambiente
+        var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+        var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+        var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+
+        if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
+            throw new InvalidOperationException("JWT_KEY, JWT_ISSUER ou JWT_AUDIENCE não estão definidos nas variáveis de ambiente ou no .env.");
+
+        var key = Encoding.ASCII.GetBytes(jwtKey);
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()),
@@ -83,8 +89,8 @@ public class AuthController : ControllerBase
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddHours(8),
-            Issuer = jwtSettings["Issuer"],
-            Audience = jwtSettings["Audience"],
+            Issuer = jwtIssuer,
+            Audience = jwtAudience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var tokenHandler = new JwtSecurityTokenHandler();
