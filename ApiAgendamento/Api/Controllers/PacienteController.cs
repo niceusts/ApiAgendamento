@@ -1,5 +1,7 @@
+using ApiAgendamento.Domain.Entities;
 using ApiAgendamento.Domain.Repositories;
 using ApiAgendamento.Infrastructure.Data;
+using ApiAgendamento.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +15,13 @@ public class PacienteController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly IMedicoRepository _medicoRepository;
+    private readonly IAgendamentoRepository _agendamentoRepository;
 
-    public PacienteController(AppDbContext context, IMedicoRepository medicoRepository)
+    public PacienteController(AppDbContext context, IMedicoRepository medicoRepository, IAgendamentoRepository agendamentoRepository)
     {
         _context = context;
         _medicoRepository = medicoRepository;
+        _agendamentoRepository = agendamentoRepository;
     }
 
     [HttpGet("meus-agendamentos")]
@@ -51,6 +55,5 @@ public class PacienteController : ControllerBase
         });
         return Ok(result);
     }
-
 
 }

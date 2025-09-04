@@ -12,6 +12,10 @@ public class AgendamentoRepository : IAgendamentoRepository
     {
         _context = context;
     }
+    public async Task<List<Agendamento>> ObterTodosAsync()
+    {
+        return await _context.Agendamentos.ToListAsync();
+    }
 
     public async Task<Agendamento?> ObterAgendaId(int id)
     {
@@ -26,6 +30,24 @@ public class AgendamentoRepository : IAgendamentoRepository
     public async Task AdicionarAsync(Agendamento agendamento)
     {
         await _context.Agendamentos.AddAsync(agendamento);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task AtualizarAsync(Agendamento agendamento)
+    {
+        _context.Agendamentos.Update(agendamento);
+        await _context.SaveChangesAsync();
+    }
+
+    // buscar HorarioDisponivel por Id
+    public async Task<HorarioDisponivel?> ObterHorarioDisponivelPorIdAsync(int horarioId)
+    {
+        return await _context.HorarioDisponiveis.FirstOrDefaultAsync(h => h.Id == horarioId);
+    }
+   
+    public async Task DeleteAsync(Agendamento agendamento)
+    {
+        _context.Agendamentos.Remove(agendamento);
         await _context.SaveChangesAsync();
     }
 }
