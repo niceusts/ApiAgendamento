@@ -1,3 +1,4 @@
+using ApiAgendamento.Domain.Repositories;
 using ApiAgendamento.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,17 +8,19 @@ namespace ApiAgendamento.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize] // Exige autenticação JWT
+//[Authorize] // Exige autenticação JWT
 public class PacienteController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly IMedicoRepository _medicoRepository;
 
-    public PacienteController(AppDbContext context)
+    public PacienteController(AppDbContext context, IMedicoRepository medicoRepository)
     {
         _context = context;
+        _medicoRepository = medicoRepository;
     }
 
-    [HttpGet("meus-agendamentos")] // /api/paciente/meus-agendamentos?pacienteId=1
+    [HttpGet("meus-agendamentos")]
     public async Task<IActionResult> MeusAgendamentos([FromQuery] int pacienteId)
     {
         var agendamentos = await _context.Agendamentos
@@ -34,4 +37,20 @@ public class PacienteController : ControllerBase
 
         return Ok(agendamentos);
     }
+
+    [HttpGet("horarios-disponiveis")]
+    public async Task<IActionResult> ListarTodosHorariosDisponiveis()
+    {
+        var medicos = await _medicoRepository.ObterTodosAsync();
+        var result = medicos.Select(m => new {
+            MedicoId = m.Id,
+            Nome = m.Nome,
+            Especialidade = m.Especialidade,
+            HorariosDisponiveis = m.HorariosDisponiveis
+                .Select(h => new { h.Id, h.Inicio, h.Fim })
+        });
+        return Ok(result);
+    }
+
+
 }
