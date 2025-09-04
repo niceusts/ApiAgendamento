@@ -20,6 +20,8 @@ builder.Services.AddSwaggerGen();
 // Usa variáveis do .env
 var dbConnection = Environment.GetEnvironmentVariable("DB_CONNECTION");
 var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+if (string.IsNullOrEmpty(jwtKey))
+    throw new InvalidOperationException("JWT_KEY não está definido nas variáveis de ambiente ou no .env.");
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
 var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 
