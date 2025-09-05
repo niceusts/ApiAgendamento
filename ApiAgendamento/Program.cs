@@ -47,6 +47,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Configuração de CORS para o frontend
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
 builder.Services.AddScoped<IAgendamentoRepository, AgendamentoRepository>();
 builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
@@ -61,6 +72,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(); //CORS antes da autenticação
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
