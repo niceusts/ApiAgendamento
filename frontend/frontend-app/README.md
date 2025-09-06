@@ -1,39 +1,22 @@
-# frontend-app
+# Frontend - frontend-app
 
-This template should help get you started developing with Vue 3 in Vite.
+Frontend em Vue 3 + Vite para o sistema de agendamento médico.
 
-## Recommended IDE Setup
+## Pré-requisitos
+- Node.js 22.12+ (ou 20.19+)
+- npm
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+## Instalação
+```powershell
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
+## Como rodar
+```powershell
 npm run dev
 ```
+Acesse em: http://localhost:5173
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## Configuração
+- O frontend se comunica com o backend em `https://localhost:7056/api`.
+- Certifique-se de que o backend esteja rodando antes de acessar o frontend.
