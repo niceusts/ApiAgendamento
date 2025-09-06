@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DotNetEnv;
 
-// Carrega variáveis do .env
+// Carrega variï¿½veis do .env
 Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,11 +17,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Usa variáveis do .env
+// Usa variï¿½veis do .env
 var dbConnection = Environment.GetEnvironmentVariable("DB_CONNECTION");
 var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
 if (string.IsNullOrEmpty(jwtKey))
-    throw new InvalidOperationException("JWT_KEY não está definido nas variáveis de ambiente ou no .env.");
+    throw new InvalidOperationException("JWT_KEY nï¿½o estï¿½ definido nas variï¿½veis de ambiente ou no .env.");
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
 var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 
@@ -47,7 +47,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Configuração de CORS para o frontend
+// Configuraï¿½ï¿½o de CORS para o frontend
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -63,16 +63,28 @@ builder.Services.AddScoped<IAgendamentoRepository, AgendamentoRepository>();
 builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
 builder.Services.AddScoped<AgendamentoService>();
 
+
 var app = builder.Build();
+
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    // Redireciona automaticamente da raiz para o Swagger
+    app.Use(async (context, next) =>
+    {
+        if (context.Request.Path == "/")
+        {
+            context.Response.Redirect("/swagger");
+            return;
+        }
+        await next();
+    });
 }
 
 app.UseHttpsRedirection();
-app.UseCors(); //CORS antes da autenticação
+app.UseCors(); //CORS antes da autenticaï¿½ï¿½o
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
