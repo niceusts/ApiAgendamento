@@ -1,20 +1,21 @@
+
 <template>
-  <div class="dashboard-container">
-    <h2>Bem-vindo ao sistema!</h2>
-    <p>Você está autenticado.</p>
-    <button @click="logout">Sair</button>
+  <div style="display: flex; min-height: 100vh;">
+    <Sidebar />
+    <main style="flex: 1; margin-left: 220px; padding: 2rem;">
+      <div class="dashboard-container">
+        <h2>Bem-vindo ao sistema!</h2>
+        <p>Você está autenticado.</p>
+
+      </div>
+    </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import Sidebar from '../../components/layout/Sidebar.vue'
 
-const router = useRouter()
 
-function logout() {
-  localStorage.removeItem('token')
-  router.push({ name: 'login' })
-}
 </script>
 
 <style scoped>
@@ -30,14 +31,5 @@ function logout() {
 .dashboard-container h2 {
   margin-bottom: 1rem;
 }
-.dashboard-container button {
-  margin-top: 2rem;
-  padding: 0.7rem 2rem;
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
+
 </style>
