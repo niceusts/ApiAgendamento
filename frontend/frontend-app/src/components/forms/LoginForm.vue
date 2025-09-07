@@ -40,6 +40,8 @@ const handleLogin = async () => {
     localStorage.setItem('tipo', response.data.tipo)
     // Armazena o nome do usuário (médico ou paciente)
     localStorage.setItem('nome', response.data.nome)
+    // Armazena o id do usuario
+    localStorage.setItem('medicoId', response.data.medicoId)
     console.log('Nome do usuário armazenado:', response.data.nome)
     // Redireciona para a dashboard
     window.location.href = '/dashboard'

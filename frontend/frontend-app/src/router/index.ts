@@ -4,6 +4,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/auth/LoginView.vue'
 import DashboardView from '../views/dashboard/DashboardView.vue'
 import RegisterView from '../views/auth/RegisterView.vue'
+import AdicionarHorarioView from '@/components/medico/AdicionarHorario.vue'
+import ListaHorariosView from '@/components/medico/ListaHorarios.vue'
 
 
 const router = createRouter({
@@ -29,6 +31,19 @@ const router = createRouter({
       component: DashboardView,
       meta: { requiresAuth: true },
     },
+    {
+      path: '/AdicionarHorario',
+      name: 'adicionarHorario',
+      component: AdicionarHorarioView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/listaHorarios',
+      name: 'listaHorarios',
+      component: ListaHorariosView,
+      meta: { requiresAuth: true },
+
+    }
   ],
 })
 

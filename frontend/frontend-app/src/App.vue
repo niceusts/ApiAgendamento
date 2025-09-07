@@ -1,10 +1,22 @@
 
+
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
+import { computed } from 'vue'
+import Sidebar from './components/layout/Sidebar.vue'
+
+const route = useRoute()
+const esconderRotas = ['login', 'register']
+const mostrarSidebar = computed(() => !esconderRotas.includes(route.name as string))
 </script>
 
 <template>
-  <RouterView />
+  <div style="display: flex; min-height: 100vh;">
+    <Sidebar v-if="mostrarSidebar" />
+    <main style="flex: 1;">
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <style scoped>
