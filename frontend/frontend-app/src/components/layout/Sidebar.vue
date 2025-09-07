@@ -8,7 +8,7 @@
             <div class="sidebar-nome">{{ nomeUsuario }}</div>
             <div class="sidebar-tipo">{{ tipoUsuario }}</div>
             <li><router-link to="/dashboard">Dashboard</router-link></li>
-            <li><router-link to="/">Meus Agendamentos</router-link></li>
+            <li><router-link to="/listaHorarios">Meus Horários</router-link></li>
             <li><router-link to="/">Meus Pacientes</router-link></li>
           </div>
           <button @click="logout">Sair</button>
