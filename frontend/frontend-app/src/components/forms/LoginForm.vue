@@ -34,10 +34,15 @@ const handleLogin = async () => {
       email: email.value,
       senha: password.value,
     })
-  // Armazena o token JWT
-  localStorage.setItem('token', response.data.token)
-  // Redireciona para a dashboard
-  window.location.href = '/dashboard'
+    // Armazena o token JWT
+    localStorage.setItem('token', response.data.token)
+    // Armazena o tipo de usuário
+    localStorage.setItem('tipo', response.data.tipo)
+    // Armazena o nome do usuário (médico ou paciente)
+    localStorage.setItem('nome', response.data.nome)
+    console.log('Nome do usuário armazenado:', response.data.nome)
+    // Redireciona para a dashboard
+    window.location.href = '/dashboard'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     error.value = err.response?.data?.message

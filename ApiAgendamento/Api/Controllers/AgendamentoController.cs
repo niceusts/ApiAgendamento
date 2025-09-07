@@ -7,12 +7,18 @@ namespace ApiAgendamento.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+/// <summary>
+/// Controlador responsável pelas operações de agendamento.
+/// </summary>
 public class AgendamentoController : ControllerBase
 {
     private readonly AgendamentoService _service;
     private readonly IMedicoRepository _medicoRepository;
     private readonly IAgendamentoRepository _agendamentoRepository;
 
+    /// <summary>
+    /// Construtor do controlador de agendamento.
+    /// </summary>
     public AgendamentoController(AgendamentoService service, IMedicoRepository medicoRepository, IAgendamentoRepository agendamentoRepository)
     {
         _service = service;
@@ -21,6 +27,9 @@ public class AgendamentoController : ControllerBase
     }
 
     [HttpPost]
+    /// <summary>
+    /// Cria um novo agendamento.
+    /// </summary>
     public async Task<IActionResult> CriarAgendamento(int pacienteId, int horarioId)
     {
         try
@@ -35,6 +44,9 @@ public class AgendamentoController : ControllerBase
     }
 
     [HttpGet]
+    /// <summary>
+    /// Lista todos os agendamentos.
+    /// </summary>
     public async Task<IActionResult> ListarAgendamentos()
     {
         var agendamentos = await _agendamentoRepository.ObterTodosAsync();
@@ -49,6 +61,9 @@ public class AgendamentoController : ControllerBase
     }
 
     [HttpPatch]
+    /// <summary>
+    /// Atualiza um agendamento existente.
+    /// </summary>
     public async Task<IActionResult> AtualizarAgendamento(int agendamentoId, int novoHorarioId)
     {
         try
@@ -63,6 +78,9 @@ public class AgendamentoController : ControllerBase
     }
 
     [HttpDelete]
+    /// <summary>
+    /// Cancela um agendamento.
+    /// </summary>
     public async Task<IActionResult> CancelarAgendamento(int agendamentoId)
     {
         try

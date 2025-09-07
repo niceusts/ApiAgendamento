@@ -7,7 +7,7 @@ namespace ApiAgendamento.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-//[Authorize] // Exige autenticaÁ„o JWT
+//[Authorize] // Exige autenticaÔøΩÔøΩo JWT
 public class MedicoController : ControllerBase
 {
     private readonly IMedicoRepository _medicoRepository;
@@ -24,12 +24,12 @@ public class MedicoController : ControllerBase
     {
         var medico = await _medicoRepository.ObterPorIdAsync(medicoId);
         if (medico == null)
-            return NotFound("MÈdico n„o encontrado.");
+            return NotFound("M√©dico n√£o encontrado.");
         try
         {
             medico.AdicionarHorarioDisponivel(dto.Inicio, dto.Fim);
             await _medicoRepository.AtualizarAsync(medico);
-            return Ok("Hor·rio adicionado com sucesso");
+            return Ok("Hor√°rio adicionado com sucesso");
         }
         catch (Exception ex)
         {
@@ -42,17 +42,17 @@ public class MedicoController : ControllerBase
     {
         var medico = await _medicoRepository.ObterPorIdAsync(medicoId);
         if (medico == null)
-            return NotFound("MÈdico n„o encontrado.");
+            return NotFound("M√©dico n√£o encontrado.");
 
         var agenda = await _agendamentoRepo.ObterAgendaId(horarioId);
         if (agenda != null)
-            return BadRequest("N„o È possÌvel remover um hor·rio que j· possui agendamentos.");
+            return BadRequest("N√£o √© poss√≠vel remover um hor√°rio que j√° possui agendamentos.");
 
         try
         {
             medico.RemoverHorarioDisponivel(medicoId, horarioId);
             await _medicoRepository.AtualizarAsync(medico);
-            return Ok("Hor·rio removido com sucesso.");
+            return Ok("Hor√°rio removido com sucesso.");
         }
         catch (Exception ex)
         {
@@ -65,7 +65,7 @@ public class MedicoController : ControllerBase
     {
         var medico = await _medicoRepository.ObterPorIdAsync(medicoId);
         if (medico == null)
-            return NotFound("MÈdico n„o encontrado.");
+            return NotFound("M√©dico n√£o encontrado.");
         return Ok(medico.HorariosDisponiveis);
     }
 
@@ -74,12 +74,12 @@ public class MedicoController : ControllerBase
     {
         var medico = await _medicoRepository.ObterPorIdAsync(medicoId);
         if (medico == null)
-            return NotFound("MÈdico n„o encontrado.");
+            return NotFound("M√©dico n√£o encontrado.");
         try
         {
             medico.AtualizarHorario(medicoId, horarioId, dto.Inicio, dto.Fim);
             await _medicoRepository.AtualizarAsync(medico);
-            return Ok("Hor·rio atualizado com sucesso.");
+            return Ok("Hor√°rio atualizado com sucesso.");
         }
         catch (Exception ex)
         {
