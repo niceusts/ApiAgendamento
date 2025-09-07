@@ -19,7 +19,7 @@ public class Medico
     public void AdicionarHorarioDisponivel(DateTime inicio, DateTime fim)
     {
         if (fim <= inicio)
-            throw new ArgumentException("Horário inválido.");
+            throw new ArgumentException("HorÃ¡rio invÃ¡lido.");
 
         HorariosDisponiveis.Add(new HorarioDisponivel(inicio, fim, Id));
     }
@@ -28,7 +28,7 @@ public class Medico
     {
         var horario = HorariosDisponiveis.FirstOrDefault(h => h.Id == horarioId && h.MedicoId == medicoId);
         if (horario == null)
-            throw new ArgumentException("Horário não encontrado.");
+            throw new ArgumentException("HorÃ¡rio nÃ£o encontrado.");
         HorariosDisponiveis.Remove(horario);
     }
 
@@ -36,10 +36,10 @@ public class Medico
     {
         var horario = HorariosDisponiveis.FirstOrDefault(h => h.Id == horarioId && h.MedicoId == medicoId);
         if (horario == null)
-            throw new ArgumentException("Horário não encontrado.");
+            throw new ArgumentException("HorÃ¡rio nÃ£o encontrado.");
 
         if (novoFim <= novoInicio)
-            throw new ArgumentException("Horário inválido.");
+            throw new ArgumentException("HorÃ¡rio invÃ¡lido.");
 
         horario.GetType().GetProperty("Inicio")!.SetValue(horario, novoInicio);
         horario.GetType().GetProperty("Fim")!.SetValue(horario, novoFim);

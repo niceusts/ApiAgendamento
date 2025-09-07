@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DotNetEnv;
 
-// Carrega vari�veis do .env
+// Carrega variáveis do .env
 Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,11 +17,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Usa vari�veis do .env
+// Configuração do Swagger para usar os comentários XML
+// var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+// var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+// builder.Services.AddSwaggerGen(options =>
+// {
+//     options.IncludeXmlComments(xmlPath);
+// });
+
+// Usa variáveis do .env
 var dbConnection = Environment.GetEnvironmentVariable("DB_CONNECTION");
 var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
 if (string.IsNullOrEmpty(jwtKey))
-    throw new InvalidOperationException("JWT_KEY n�o est� definido nas vari�veis de ambiente ou no .env.");
+    throw new InvalidOperationException("JWT_KEY não está definido nas variáveis de ambiente ou no .env.");
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
 var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 
@@ -47,7 +55,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Configura��o de CORS para o frontend
+// Configuração de CORS para o frontend
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -84,7 +92,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(); //CORS antes da autentica��o
+app.UseCors(); //CORS antes da autenticação
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
