@@ -43,8 +43,6 @@ const handleLogin = async () => {
     console.log('Nome do usuário armazenado:', response.data.nome)
     // Redireciona para a dashboard
     window.location.href = '/dashboard'
-
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     error.value = err.response?.data?.message

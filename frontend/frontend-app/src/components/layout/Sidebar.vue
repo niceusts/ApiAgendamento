@@ -14,11 +14,13 @@
           <button @click="logout">Sair</button>
         </template>
         <template v-else-if="tipoUsuario === 'paciente'">
-          <div class="sidebar-nome">{{ nomeUsuario }}</div>
-          <div class="sidebar-tipo">{{ tipoUsuario }}</div>
-          <li><router-link to="/dashboard">Dashboard</router-link></li>
-          <li><router-link to="/">Horários Disponiveis</router-link></li>
-          <li><router-link to="/">Meus Agendamentos</router-link></li>
+            <div>
+            <div class="sidebar-nome">{{ nomeUsuario }}</div>
+            <div class="sidebar-tipo">{{ tipoUsuario }}</div>
+            <li><router-link to="/dashboard">Dashboard</router-link></li>
+            <li><router-link to="/">Horários Disponiveis</router-link></li>
+            <li><router-link to="/">Meus Agendamentos</router-link></li>
+          </div>
           <button @click="logout">Sair</button>
         </template>
       </ul>
@@ -40,7 +42,6 @@ function logout() {
 }
 const tipoUsuario = ref('')
 const nomeUsuario = ref('')
-
 
 onMounted(() => {
   tipoUsuario.value = localStorage.getItem('tipo') || ''
