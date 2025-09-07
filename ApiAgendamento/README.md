@@ -1,3 +1,4 @@
+
 # Backend - ApiAgendamento
 
 Backend em ASP.NET Core 8 para o sistema de agendamento médico.
@@ -6,57 +7,41 @@ Backend em ASP.NET Core 8 para o sistema de agendamento médico.
 - .NET 8 SDK
 - PostgreSQL
 
-## Configuração
-1. Configure o banco de dados PostgreSQL e ajuste a string de conexão no arquivo `.env`.
-2. Configure as variáveis de ambiente JWT (`JWT_KEY`, `JWT_ISSUER`, `JWT_AUDIENCE`).
-3. (Opcional) Rode as migrations:
+## Como rodar o projeto
+
+1. **Clone o repositório e acesse a pasta:**
   ```powershell
-  dotnet ef database update
+  git clone <url-do-repo>
+  cd ApiAgendamento
   ```
 
-## Como rodar
-```powershell
-dotnet run --launch-profile https
-```
-Acesse a API e o Swagger em: https://localhost:7056/swagger
+2. **Restaure os pacotes:**
+  ```powershell
+  dotnet restore
+  ```
 
+3. **Configure o banco de dados e variáveis de ambiente:**
+  - Crie um arquivo `.env` na pasta `ApiAgendamento/` com o conteúdo:
+    ```
+    DB_CONNECTION=Host=localhost;Port=5432;Database=ApiAgendamentoDb;Username=postgres;Password=sua_senha
+    JWT_KEY=sua-chave-super-secreta-para-jwt-1234567890
+    JWT_ISSUER=ApiAgendamento
+    JWT_AUDIENCE=ApiAgendamentoUser
+    ```
+  - Não suba o `.env` para o GitHub!
 
-```
-DB_CONNECTION=Host=localhost;Port=5432;Database=ApiAgendamentoDb;Username=postgres;Password=sua_senha
-JWT_KEY=sua-chave-super-secreta-para-jwt-1234567890
-JWT_ISSUER=ApiAgendamento
-JWT_AUDIENCE=ApiAgendamentoUser
-```
+4. **Crie o banco e as tabelas:**
+  - Certifique-se que o PostgreSQL está rodando.
+  - Execute:
+    ```powershell
+    dotnet ef database update --project ApiAgendamento/ApiAgendamento.csproj
+    ```
 
-> **Importante:** Não suba o `.env` para o GitHub!
-
-### 4. Restaure os pacotes
-
-```
-dotnet restore
-```
-
-### 5. Crie o banco e as tabelas
-
-rode a variável de ambiente no terminal
-```
- Host=localhost;Port=5432;Database=ApiAgendamentoDb;Username=postgres;Password=sua_senha
-
-```
-crie o banco: 
-```
-dotnet ef database update --project ApiAgendamento/ApiAgendamento.csproj
-```
-
-### 6. Rode a aplicação
-
-```
-dotnet run --project ApiAgendamento/ApiAgendamento.csproj
-```
-
-A API estará disponível em `https://localhost:5001` ou `http://localhost:5000`.
-
-## Testes
+5. **Rode a aplicação:**
+  ```powershell
+  dotnet run --launch-profile https --project ApiAgendamento/ApiAgendamento.csproj
+  ```
+  - Acesse a API e o Swagger em: https://localhost:7056/swagger
 
 - Estrutura para testes unitários e de integração em `/tests` (em produção).
 
