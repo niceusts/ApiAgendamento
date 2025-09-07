@@ -13,12 +13,15 @@
       <button type="submit">Entrar</button>
       <p v-if="error" class="error">{{ error }}</p>
     </form>
+    <div style="margin-top: 10px; text-align: center;">
+      <p>Não tem uma conta?</p><a href="/register"> Cadastre-se</a>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import api from '../services/api'
+import api from '../../services/api'
 
 const email = ref('')
 const password = ref('')
