@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <aside class="sidebar">
+  <button class="sidebar-toggle" @click="toggleSidebar" aria-label="Abrir menu">
+    <span v-if="!sidebarAberto">☰</span>
+    <span v-else>×</span>
+  </button>
+  <aside class="sidebar" :class="{ aberto: sidebarAberto }">
     <nav>
       <ul>
         <template v-if="tipoUsuario === 'medico'">
@@ -43,13 +47,56 @@ function logout() {
 const tipoUsuario = ref('')
 const nomeUsuario = ref('')
 
+const sidebarAberto = ref(window.innerWidth > 900)
+
+function toggleSidebar() {
+  sidebarAberto.value = !sidebarAberto.value
+}
+
+function handleResize() {
+  sidebarAberto.value = window.innerWidth > 900
+}
+
 onMounted(() => {
   tipoUsuario.value = localStorage.getItem('tipo') || ''
   nomeUsuario.value = localStorage.getItem('nome') || ''
+  window.addEventListener('resize', handleResize)
 })
 </script>
 
 <style scoped>
+
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2001;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 2rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+@media (max-width: 900px) {
+  .sidebar-toggle {
+    display: block;
+  }
+  .sidebar {
+    left: -240px;
+    transition: left 0.3s;
+    z-index: 2000;
+  }
+  .sidebar.aberto {
+    left: 0;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.18);
+  }
+}
+
 .sidebar-nome {
   font-size: 1.1rem;
   font-weight: bold;
@@ -74,6 +121,7 @@ onMounted(() => {
   left: 0;
   display: flex;
   flex-direction: column;
+  transition: left 0.3s;
 }
 .sidebar nav ul {
   list-style: none;

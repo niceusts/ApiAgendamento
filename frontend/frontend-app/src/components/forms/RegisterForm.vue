@@ -46,7 +46,7 @@ import api from '../../services/api'
 const nome = ref('')
 const email = ref('')
 const senha = ref('')
-const tipo = ref('paciente')
+const tipo = ref('')
 const especialidade = ref('')
 const error = ref('')
 const success = ref(false)

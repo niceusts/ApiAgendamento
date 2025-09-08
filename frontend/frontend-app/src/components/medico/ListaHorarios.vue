@@ -1,9 +1,10 @@
 <template>
   <div class="lista-horarios">
-    <div>
-      <router-link to="/AdicionarHorario">Adicionar Horário</router-link>
+    <div class="headerOptions">
+      <h2>Meus Horários</h2>
+      <button class="btn btn-success" @click="$router.push('/AdicionarHorario')">Adicionar Horário</button>
     </div>
-    <h2>Horários Disponíveis</h2>
+
     <ul v-if="horarios.length">
       <li v-for="h in horarios" :key="h.id">
         <span>
@@ -56,7 +57,6 @@ onMounted(carregarHorarios)
 
 <style scoped>
 .lista-horarios {
-  margin: 2rem auto;
   padding: 2rem;
   background: #fff;
   border-radius: 8px;
