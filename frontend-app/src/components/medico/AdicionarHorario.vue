@@ -16,7 +16,8 @@
         v-model="fim"
         required
       />
-      <button type="submit">Adicionar</button>
+      <button class="btn btn-secondary mx-2" @click="$router.push('/ListaHorarios')"> Voltar</button>
+      <button class="btn btn-success" type="submit">Adicionar</button>
     </form>
     <p v-if="mensagem" :class="{ erro: erro }">{{ mensagem }}</p>
   </div>
@@ -68,8 +69,6 @@ async function adicionarHorario() {
 
 <style scoped>
 .adicionar-horario {
-  max-width: 400px;
-  margin: 2rem auto;
   padding: 2rem;
   background: #fff;
   border-radius: 8px;
@@ -83,14 +82,6 @@ input[type="datetime-local"] {
   width: 100%;
   padding: 0.5rem;
   margin-bottom: 1rem;
-}
-button {
-  padding: 0.5rem 1.5rem;
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 .erro {
   color: #c00;
