@@ -1,5 +1,8 @@
+
+
 using ApiAgendamento.Domain.Entities;
 using ApiAgendamento.Domain.Repositories;
+using ApiAgendamento.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,18 +10,31 @@ namespace ApiAgendamento.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-//[Authorize] // Exige autentica��o JWT
+// [Authorize]
+
+/// <summary>
+/// Controller responsável pelas operações de horários disponíveis do médico.
+/// </summary>
 public class MedicoController : ControllerBase
 {
     private readonly IMedicoRepository _medicoRepository;
     private readonly IAgendamentoRepository _agendamentoRepo;
+    private readonly MedicoService _medicoService;
+
 
     public MedicoController(IMedicoRepository medicoRepository, IAgendamentoRepository agendamentoRepository)
     {
         _medicoRepository = medicoRepository;
         _agendamentoRepo = agendamentoRepository;
+        _medicoService = new MedicoService();
     }
 
+    /// <summary>
+    /// Adiciona um novo horário disponível para o médico informado.
+    /// </summary>
+    /// <param name="medicoId">Id do médico</param>
+    /// <param name="dto">Dados do horário (início e fim)</param>
+    /// <returns>Mensagem de sucesso ou erro</returns>
     [HttpPost("{medicoId}/horarios")]
     public async Task<IActionResult> AdicionarHorarioDisponivel(int medicoId, [FromBody] HorarioDisponivelDto dto)
     {
@@ -27,7 +43,7 @@ public class MedicoController : ControllerBase
             return NotFound("Médico não encontrado.");
         try
         {
-            medico.AdicionarHorarioDisponivel(dto.Inicio, dto.Fim);
+            _medicoService.AdicionarHorarioDisponivel(medico, dto.Inicio, dto.Fim);
             await _medicoRepository.AtualizarAsync(medico);
             return Ok("Horário adicionado com sucesso");
         }
@@ -37,6 +53,12 @@ public class MedicoController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Remove um horário disponível do médico, se não houver agendamento vinculado.
+    /// </summary>
+    /// <param name="medicoId">Id do médico</param>
+    /// <param name="horarioId">Id do horário a remover</param>
+    /// <returns>Mensagem de sucesso ou erro</returns>
     [HttpDelete("{medicoId}/horarios/{horarioId}/remover")]
     public async Task<IActionResult> RemoverHorarioDisponivel(int medicoId, int horarioId)
     {
@@ -44,13 +66,14 @@ public class MedicoController : ControllerBase
         if (medico == null)
             return NotFound("Médico não encontrado.");
 
-        var agenda = await _agendamentoRepo.ObterAgendaId(horarioId);
-        if (agenda != null)
-            return BadRequest("Não é possível remover um horário que já possui agendamentos.");
-
         try
         {
-            medico.RemoverHorarioDisponivel(medicoId, horarioId);
+            // Passa função que verifica se existe agendamento vinculado ao horário usando ObterHorarioDisponivelPorIdAsync
+            _medicoService.RemoverHorarioDisponivel(
+                medico,
+                horarioId,
+                (hid) => _agendamentoRepo.ObterHorarioDisponivelPorIdAsync(hid).Result != null
+            );
             await _medicoRepository.AtualizarAsync(medico);
             return Ok("Horário removido com sucesso.");
         }
@@ -60,6 +83,11 @@ public class MedicoController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Lista todos os horários disponíveis do médico.
+    /// </summary>
+    /// <param name="medicoId">Id do médico</param>
+    /// <returns>Lista de horários disponíveis</returns>
     [HttpGet("{medicoId}/horarios")]
     public async Task<IActionResult> ListarHorariosDisponiveis(int medicoId)
     {
@@ -69,6 +97,13 @@ public class MedicoController : ControllerBase
         return Ok(medico.HorariosDisponiveis);
     }
 
+    /// <summary>
+    /// Atualiza um horário disponível do médico.
+    /// </summary>
+    /// <param name="medicoId">Id do médico</param>
+    /// <param name="horarioId">Id do horário</param>
+    /// <param name="dto">Novos dados do horário</param>
+    /// <returns>Mensagem de sucesso ou erro</returns>
     [HttpPatch("{medicoId}/horarios/{horarioId}")]
     public async Task<IActionResult> AtualizarHorario(int medicoId, int horarioId, [FromBody] HorarioDisponivelDto dto)
     {
@@ -77,7 +112,7 @@ public class MedicoController : ControllerBase
             return NotFound("Médico não encontrado.");
         try
         {
-            medico.AtualizarHorario(medicoId, horarioId, dto.Inicio, dto.Fim);
+            _medicoService.AtualizarHorario(medico, horarioId, dto.Inicio, dto.Fim);
             await _medicoRepository.AtualizarAsync(medico);
             return Ok("Horário atualizado com sucesso.");
         }
@@ -87,15 +122,17 @@ public class MedicoController : ControllerBase
         }
     }
 }
-
-public class MedicoDto
-{
-    public string Nome { get; set; } = string.Empty;
-    public string Especialidade { get; set; } = string.Empty;
-}
-
+/// <summary>
+/// DTO para receber dados de horário disponível (início e fim).
+/// </summary>
 public class HorarioDisponivelDto
 {
+    /// <summary>
+    /// Data/hora de início do horário disponível.
+    /// </summary>
     public DateTime Inicio { get; set; }
+    /// <summary>
+    /// Data/hora de fim do horário disponível.
+    /// </summary>
     public DateTime Fim { get; set; }
 }
