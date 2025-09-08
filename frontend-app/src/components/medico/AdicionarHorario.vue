@@ -19,18 +19,16 @@
       <button class="btn btn-secondary mx-2" @click="$router.push('/ListaHorarios')"> Voltar</button>
       <button class="btn btn-success" type="submit">Adicionar</button>
     </form>
-    <p v-if="mensagem" :class="{ erro: erro }">{{ mensagem }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import api from '@/services/api'
+import Swal from 'sweetalert2'
 
 const inicio = ref('')
 const fim = ref('')
-const mensagem = ref('')
-const erro = ref(false)
 
 function toUtcIsoString(local: string) {
   if (!local) return ''
@@ -39,30 +37,27 @@ function toUtcIsoString(local: string) {
 }
 
 async function adicionarHorario() {
-  mensagem.value = ''
-  erro.value = false
   try {
     const medicoId = localStorage.getItem('medicoId')
     if (!medicoId) {
-      mensagem.value = 'Médico não identificado.'
-      erro.value = true
+      Swal.fire('Erro', 'Médico não identificado.', 'error')
       return
     }
-    await api.post(`/medico/${medicoId}/horarios`, {
+    const response = await api.post(`/medico/${medicoId}/horarios`, {
       inicio: toUtcIsoString(inicio.value),
       fim: toUtcIsoString(fim.value)
     })
-    mensagem.value = 'Horário adicionado com sucesso!'
+    Swal.fire('Sucesso', response.data, 'success')
     inicio.value = ''
     fim.value = ''
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
-    mensagem.value =
+    const msg =
       e.response?.data?.message ||
       e.response?.data?.error ||
       (typeof e.response?.data === 'string' ? e.response.data : '') ||
       'Erro ao adicionar horário.'
-    erro.value = true
+    Swal.fire('Erro', msg, 'error')
   }
 }
 </script>
