@@ -41,7 +41,7 @@
 <script setup lang="ts">
 
 import { ref } from 'vue'
-import api from '../../services/api'
+import { register } from '../../services/authService'
 
 const nome = ref('')
 const email = ref('')
@@ -83,7 +83,7 @@ const handleRegister = async () => {
     if (tipo.value === 'medico') {
       payload.especialidade = especialidade.value
     }
-    await api.post('/auth/register', payload)
+  await register(payload)
     success.value = true
     nome.value = ''
     email.value = ''

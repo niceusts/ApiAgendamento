@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import api from '@/services/api'
+import { adicionarHorarioDisponivel } from '@/services/medicoService'
 import Swal from 'sweetalert2'
 
 const inicio = ref('')
@@ -43,11 +43,12 @@ async function adicionarHorario() {
       Swal.fire('Erro', 'Médico não identificado.', 'error')
       return
     }
-    const response = await api.post(`/medico/${medicoId}/horarios`, {
-      inicio: toUtcIsoString(inicio.value),
-      fim: toUtcIsoString(fim.value)
-    })
-    Swal.fire('Sucesso', response.data, 'success')
+    const msg = await adicionarHorarioDisponivel(
+      Number(medicoId),
+      toUtcIsoString(inicio.value),
+      toUtcIsoString(fim.value)
+    )
+    Swal.fire('Sucesso', msg, 'success')
     inicio.value = ''
     fim.value = ''
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
