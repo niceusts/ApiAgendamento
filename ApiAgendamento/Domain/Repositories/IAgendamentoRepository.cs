@@ -10,5 +10,6 @@ public interface IAgendamentoRepository
     Task<List<Agendamento>> ObterTodosAsync();
     Task AtualizarAsync(Agendamento agendamento);
     Task<HorarioDisponivel?> ObterHorarioDisponivelPorIdAsync(int horarioId);
+    Task<bool> ExisteAgendamentoParaHorario(int horarioId);
     Task DeleteAsync(Agendamento agendamento);
 }

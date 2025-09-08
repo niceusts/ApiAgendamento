@@ -21,7 +21,6 @@ public class MedicoController : ControllerBase
     private readonly IAgendamentoRepository _agendamentoRepo;
     private readonly MedicoService _medicoService;
 
-
     public MedicoController(IMedicoRepository medicoRepository, IAgendamentoRepository agendamentoRepository)
     {
         _medicoRepository = medicoRepository;
@@ -68,11 +67,10 @@ public class MedicoController : ControllerBase
 
         try
         {
-            // Passa função que verifica se existe agendamento vinculado ao horário usando ObterHorarioDisponivelPorIdAsync
             _medicoService.RemoverHorarioDisponivel(
                 medico,
                 horarioId,
-                (hid) => _agendamentoRepo.ObterHorarioDisponivelPorIdAsync(hid).Result != null
+                (hid) => _agendamentoRepo.ExisteAgendamentoParaHorario(hid).Result
             );
             await _medicoRepository.AtualizarAsync(medico);
             return Ok("Horário removido com sucesso.");

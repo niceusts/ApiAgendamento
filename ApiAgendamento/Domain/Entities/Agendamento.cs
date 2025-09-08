@@ -26,7 +26,7 @@ public class Agendamento
     {
         var horario = medico.HorariosDisponiveis.FirstOrDefault(h => h.Id == horarioId);
         if (horario == null)
-            throw new ArgumentException("Hor·rio n„o disponÌvel para este mÈdico.");
+            throw new ArgumentException("Horario n√£o dispon√≠vel para este m√©dico.");
 
         return new Agendamento(medico.Id, pacienteId, horario.Inicio);
     }
