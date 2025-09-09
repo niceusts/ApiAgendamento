@@ -37,7 +37,7 @@ public class AuthController : ControllerBase
     /// Retorna a lista de usuários cadastrados.
     /// </summary>
     /// <returns>Lista de usuários com informações básicas e nome associado.</returns>
-    [HttpGet]
+    [HttpGet("usuarios")]
     public async Task<IActionResult> ObterUsuarios()
     {
         var usuarios = await _context.Usuarios
