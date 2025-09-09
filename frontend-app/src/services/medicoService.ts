@@ -3,6 +3,7 @@ import api from './api';
 
 // Buscar horários de um médico
 import { type HorarioDisponivel } from '../models/HorarioDisponivel';
+import type { AgendaMedico } from '@/models/Medico';
 
 export async function getHorariosByMedicoId(medicoId: number): Promise<HorarioDisponivel[]> {
   const response = await api.get<HorarioDisponivel[]>(`/medico/${medicoId}/horarios`);
@@ -26,3 +27,9 @@ export async function atualizarHorarioDisponivel(medicoId: number, horarioId: nu
   const response = await api.patch(`/medico/${medicoId}/horarios/${horarioId}`, { inicio, fim });
   return response.data;
 }
+
+export async function getAgendasByMedicoId(medicoId: number): Promise<AgendaMedico[]> {
+  const response = await api.get<AgendaMedico[]>(`/medico/${medicoId}/agendas`);
+  return response.data;
+}
+
