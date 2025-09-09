@@ -1,10 +1,9 @@
-
-
 using ApiAgendamento.Domain.Entities;
 using ApiAgendamento.Domain.Repositories;
 using ApiAgendamento.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ApiAgendamento.Api.Dtos;
 
 namespace ApiAgendamento.Api.Controllers;
 
@@ -20,12 +19,14 @@ public class MedicoController : ControllerBase
     private readonly IMedicoRepository _medicoRepository;
     private readonly IAgendamentoRepository _agendamentoRepo;
     private readonly MedicoService _medicoService;
+    private readonly IPacienteRepository _pacienteRepository;
 
-    public MedicoController(IMedicoRepository medicoRepository, IAgendamentoRepository agendamentoRepository)
+    public MedicoController(IMedicoRepository medicoRepository, IAgendamentoRepository agendamentoRepository, IPacienteRepository pacienteRepository)
     {
         _medicoRepository = medicoRepository;
         _agendamentoRepo = agendamentoRepository;
         _medicoService = new MedicoService();
+        _pacienteRepository = pacienteRepository;
     }
 
     /// <summary>
@@ -119,18 +120,29 @@ public class MedicoController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-}
-/// <summary>
-/// DTO para receber dados de horário disponível (início e fim).
-/// </summary>
-public class HorarioDisponivelDto
-{
-    /// <summary>
-    /// Data/hora de início do horário disponível.
-    /// </summary>
-    public DateTime Inicio { get; set; }
-    /// <summary>
-    /// Data/hora de fim do horário disponível.
-    /// </summary>
-    public DateTime Fim { get; set; }
+    [HttpGet("{medicoId}/agendas")]
+    public async Task<IActionResult> ListarAgendasDoMedico(int medicoId)
+    {
+        var medico = await _medicoRepository.ObterPorIdAsync(medicoId);
+        if (medico == null)
+            return NotFound("Médico não encontrado.");
+
+        var agendamentos = await _agendamentoRepo.ObterTodosAsync();
+        var agendasDoMedico = agendamentos.Where(a => a.MedicoId == medicoId).ToList();
+
+        // Buscar todos os pacientes envolvidos nesses agendamentos
+        var pacienteIds = agendasDoMedico.Select(a => a.PacienteId).Distinct().ToList();
+
+        var pacientes = await _pacienteRepository.ObterPorIdsAsyncList(pacienteIds);
+
+        var result = agendasDoMedico.Select(a => new
+        {
+            a.Id,
+            a.DataHora,
+            PacienteId = a.PacienteId,
+            PacienteNome = pacientes.FirstOrDefault(p => p.Id == a.PacienteId)?.Nome
+        });
+
+        return Ok(result);
+    }
 }
