@@ -6,26 +6,44 @@
       <button class="btn btn-success" @click="$router.push('/AdicionarHorario')">Adicionar Horário</button>
     </div>
 
-    <ul v-if="horarios.length">
-      <li v-for="h in horarios" :key="h.id">
-        <span>
-          {{ formatarData(h.inicio) }} - {{ formatarData(h.fim) }}
-          <div style="display: inline-block; position: relative;">
-            <button @click="alternarDropdown(h.id)" class="btn btn-sm btn-secondary" style="margin-left: 10px;">
-              Ações ▼
-            </button>
-            <ul v-if="dropdownAberto === h.id" style="position: absolute; z-index: 10; background: #fff; border: 1px solid #ccc; padding: 0.5rem; list-style: none; right: 0; min-width: 120px;">
-              <li>
-                <button class="btn btn-link" @click="$router.push({ path: '/EditarHorario', query: { id: h.id } })">Editar</button>
-              </li>
-              <li>
-                <button class="btn btn-link text-danger" @click="removerHorario(h.id)">Excluir</button>
-              </li>
-            </ul>
-          </div>
-        </span>
-      </li>
-    </ul>
+    <div class="table-responsive" v-if="horarios.length">
+      <table class="table-horarios">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Início</th>
+            <th>Fim</th>
+            <th style="width: 120px;">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="h in horarios" :key="h.id">
+            <td>{{ h.id }}</td>
+            <td>{{ formatarData(h.inicio) }}</td>
+            <td>{{ formatarData(h.fim) }}</td>
+            <td>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                  <i class="fas fa-ellipsis-v"></i> Ações
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a class="dropdown-item" href="#" @click.prevent="$router.push({ path: '/EditarHorario', query: { id: h.id } })">
+                      <i class="fas fa-edit"></i> Editar
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-danger" href="#" @click.prevent="removerHorario(h.id)">
+                      <i class="fas fa-trash-alt"></i> Excluir
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p v-else>Nenhum horário disponível.</p>
     <p v-if="mensagem" class="erro">{{ mensagem }}</p>
   </div>
@@ -40,17 +58,12 @@ import Swal from 'sweetalert2'
 
 const horarios = ref<HorarioDisponivel[]>([])
 const mensagem = ref('')
-const dropdownAberto = ref<number | null>(null)
 
 
 function formatarData(data: string) {
   if (!data) return ''
   const d = new Date(data)
   return d.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
-}
-
-function alternarDropdown(id: number) {
-  dropdownAberto.value = dropdownAberto.value === id ? null : id
 }
 
 async function carregarHorarios() {
@@ -99,22 +112,41 @@ onMounted(carregarHorarios)
 </script>
 
 <style scoped>
+.dropdown-menu {
+  z-index: 1050 !important;
+}
 .lista-horarios {
   padding: 2rem;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px #0001;
 }
-ul {
-  list-style: none;
-  padding: 0;
+.table-responsive {
+  width: 100%;
+  overflow: visible !important;
 }
-li {
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
+.dropdown-menu {
+  z-index: 2000 !important;
+}
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto !important;
+  }
+}
+.table-horarios {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 400px;
+}
+.table-horarios th, .table-horarios td {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+}
+.table-horarios th {
   background: #f5f5f5;
-  border-radius: 4px;
 }
+
 .erro {
   color: #c00;
   margin-top: 1rem;
