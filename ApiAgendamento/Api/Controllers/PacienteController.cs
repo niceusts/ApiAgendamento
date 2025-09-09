@@ -47,12 +47,15 @@ public class PacienteController : ControllerBase
     public async Task<IActionResult> ListarTodosHorariosDisponiveis()
     {
         var medicos = await _medicoRepository.ObterTodosAsync();
+        var agendamentos = await _context.Agendamentos.ToListAsync();
+
         var result = medicos.Select(m => new
         {
             MedicoId = m.Id,
             Nome = m.Nome,
             Especialidade = m.Especialidade,
             HorariosDisponiveis = m.HorariosDisponiveis
+                .Where(h => !agendamentos.Any(a => a.MedicoId == m.Id && a.DataHora == h.Inicio))
                 .Select(h => new { h.Id, h.Inicio, h.Fim })
         });
         return Ok(result);

@@ -55,7 +55,8 @@ public class AgendamentoController : ControllerBase
             a.Id,
             a.MedicoId,
             a.PacienteId,
-            a.DataHora
+            a.DataHora,
+            a.HorarioId
         });
         return Ok(result);
     }
