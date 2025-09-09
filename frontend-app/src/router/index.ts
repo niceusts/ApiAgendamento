@@ -5,6 +5,7 @@ import RegisterView from '../views/auth/RegisterView.vue'
 import AdicionarHorarioView from '@/components/medico/AdicionarHorario.vue'
 import ListaHorariosView from '@/components/medico/ListaHorarios.vue'
 import ListaAgendaView from '@/components/medico/ListaAgendas.vue'
+import AtualizarHorarioView from '@/components/medico/AtualizarHorario.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,7 +47,13 @@ const router = createRouter({
       name: 'listaAgenda',
       component: ListaAgendaView,
       meta: { requiresAuth: true },
-    }
+    },
+    {
+      path: '/atualizarHorario/:horarioId',
+      name: 'atualizarHorario',
+      component: AtualizarHorarioView,
+      meta: { requiresAuth: true },
+    },
   ],
 })
 

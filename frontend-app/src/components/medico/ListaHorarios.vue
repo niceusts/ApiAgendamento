@@ -28,7 +28,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li>
-                    <a class="dropdown-item" href="#" @click.prevent="$router.push({ path: '/EditarHorario', query: { id: h.id } })">
+                    <a class="dropdown-item" href="#" @click.prevent="$router.push({ name: 'atualizarHorario', params: { horarioId: h.id } })">
                       <i class="fas fa-edit"></i> Editar
                     </a>
                   </li>

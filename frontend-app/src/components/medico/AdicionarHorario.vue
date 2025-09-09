@@ -24,10 +24,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { adicionarHorarioDisponivel } from '@/services/medicoService'
 import Swal from 'sweetalert2'
 
 const inicio = ref('')
+const router = useRouter()
 const fim = ref('')
 
 function toUtcIsoString(local: string) {
@@ -51,6 +53,7 @@ async function adicionarHorario() {
     Swal.fire('Sucesso', msg, 'success')
     inicio.value = ''
     fim.value = ''
+    router.push('/ListaHorarios')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     const msg =
