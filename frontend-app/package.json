@@ -16,6 +16,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.1",
     "axios": "^1.11.0",
     "bootstrap": "^5.3.8",
     "pinia": "^3.0.3",
