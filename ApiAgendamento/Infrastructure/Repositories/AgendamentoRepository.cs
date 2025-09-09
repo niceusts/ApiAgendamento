@@ -44,7 +44,15 @@ public class AgendamentoRepository : IAgendamentoRepository
     {
         return await _context.HorarioDisponiveis.FirstOrDefaultAsync(h => h.Id == horarioId);
     }
-   
+
+    // Verifica se existe agendamento para um horário disponível
+    public async Task<bool> ExisteAgendamentoParaHorario(int horarioId)
+    {
+        var horario = await _context.HorarioDisponiveis.FirstOrDefaultAsync(h => h.Id == horarioId);
+        if (horario == null) return false;
+        return await _context.Agendamentos.AnyAsync(a => a.MedicoId == horario.MedicoId && a.DataHora == horario.Inicio);
+    }
+
     public async Task DeleteAsync(Agendamento agendamento)
     {
         _context.Agendamentos.Remove(agendamento);

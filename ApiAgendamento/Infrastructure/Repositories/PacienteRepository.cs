@@ -34,4 +34,9 @@ public class PacienteRepository : IPacienteRepository
         _context.Pacientes.Update(paciente);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Paciente>> ObterPorIdsAsyncList(List<int> ids)
+    {
+        return await _context.Pacientes.Where(p => ids.Contains(p.Id)).ToListAsync();
+    }
 }

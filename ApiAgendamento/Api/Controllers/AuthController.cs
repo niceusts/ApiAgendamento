@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using BCrypt.Net;
+using ApiAgendamento.Api.Dtos;
 
 namespace ApiAgendamento.Api.Controllers;
 
@@ -36,7 +37,7 @@ public class AuthController : ControllerBase
     /// Retorna a lista de usuários cadastrados.
     /// </summary>
     /// <returns>Lista de usuários com informações básicas e nome associado.</returns>
-    [HttpGet]
+    [HttpGet("usuarios")]
     public async Task<IActionResult> ObterUsuarios()
     {
         var usuarios = await _context.Usuarios
