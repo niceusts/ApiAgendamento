@@ -4,3 +4,13 @@ export interface Paciente {
   nome: string;
   email: string;
 }
+
+export interface AgendamentoPaciente {
+  id: number
+  dataHora: string
+  medico: {
+    id: number
+    nome: string
+    especialidade: string
+  }
+}
