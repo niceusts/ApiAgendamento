@@ -3,8 +3,8 @@
     <div class="row justify-content-center mb-4">
       <div class="">
         <div class="card shadow-sm border-0 p-4">
-          <h2 class="mb-4 text-primary fw-bold text-center">Horários Disponíveis para Agendamento</h2>
-          <div class="row g-2 g-md-3 mb-3 filtros align-items-end">
+          <h2 class="mb-4 text-primary fw-bold text-center my-3">Horários Disponíveis para Agendamento</h2>
+          <div class="row g-2 g-md-3 mb-3 filtros align-items-end my-3">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
               <label class="form-label">Especialidade</label>
               <select v-model="especialidadeSelecionada" class="form-select" @change="filtrarHorarios">
