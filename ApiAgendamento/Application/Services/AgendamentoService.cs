@@ -14,23 +14,46 @@ public class AgendamentoService
         _medicoRepo = medicoRepo;
     }
 
-    public async Task CriarAgendamento(int medicoId, int pacienteId, DateTime dataHora)
+    public async Task CriarAgendamento(int pacienteId, int horarioId)
     {
-        var medico = await _medicoRepo.ObterPorIdAsync(medicoId);
-        if (medico == null)
-            throw new Exception("Médico não encontrado.");
+        var horario = await _agendamentoRepo.ObterHorarioDisponivelPorIdAsync(horarioId);
+        if (horario == null)
+            throw new Exception("Horario nÃ£o encontrado.");
 
-        var disponivel = medico.HorariosDisponiveis
-            .Any(h => dataHora >= h.Inicio && dataHora < h.Fim);
-
-        if (!disponivel)
-            throw new Exception("Médico não está disponível nesse horário.");
-
-        var conflito = await _agendamentoRepo.ExisteConflito(medicoId, dataHora);
+        var conflito = await _agendamentoRepo.ExisteConflito(horario.MedicoId, horario.Inicio);
         if (conflito)
-            throw new Exception("Já existe um agendamento nesse horário.");
+            throw new Exception("JÃ¡ existe um agendamento nesse horÃ¡rio.");
 
-        var agendamento = new Agendamento(medicoId, pacienteId, dataHora);
+        // regra de dominio
+        var agendamento = new Agendamento(horario.MedicoId, pacienteId, horario.Inicio, horario.Id);
         await _agendamentoRepo.AdicionarAsync(agendamento);
+    }
+
+    public async Task AtualizarAgendamento(int agendamentoId, int novoHorarioId)
+    {
+        var agendamento = await _agendamentoRepo.ObterAgendaId(agendamentoId);
+        if (agendamento == null)
+            throw new Exception("Agendamento nÃ£o encontrado.");
+
+        var novoHorario = await _agendamentoRepo.ObterHorarioDisponivelPorIdAsync(novoHorarioId);
+        if (novoHorario == null)
+            throw new Exception("Novo horÃ¡rio nÃ£o encontrado.");
+
+        var conflito = await _agendamentoRepo.ExisteConflito(novoHorario.MedicoId, novoHorario.Inicio);
+        if (conflito)
+            throw new Exception("JÃ¡ existe um agendamento nesse novo horÃ¡rio.");
+
+        // Atualiza os dados do agendamento via mÃ©todo de domÃ­nio
+        agendamento.AtualizarMedicoEHorario(novoHorario.MedicoId, novoHorario.Inicio, novoHorario.Id);
+
+        await _agendamentoRepo.AtualizarAsync(agendamento);
+    }
+
+    public async Task CancelarAgendamento(int agendamentoId)
+    {
+        var agendamento = await _agendamentoRepo.ObterAgendaId(agendamentoId);
+        if (agendamento == null)
+            throw new Exception("Agendamento nÃ£o encontrado.");
+        await _agendamentoRepo.DeleteAsync(agendamento);
     }
 }

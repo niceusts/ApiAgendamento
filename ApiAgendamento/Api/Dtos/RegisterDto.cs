@@ -1,4 +1,4 @@
-namespace ApiAgendamento.Api.Controllers;
+namespace ApiAgendamento.Api.Dtos;
 
 public class RegisterDto
 {

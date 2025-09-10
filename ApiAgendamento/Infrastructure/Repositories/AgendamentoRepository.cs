@@ -12,6 +12,15 @@ public class AgendamentoRepository : IAgendamentoRepository
     {
         _context = context;
     }
+    public async Task<List<Agendamento>> ObterTodosAsync()
+    {
+        return await _context.Agendamentos.ToListAsync();
+    }
+
+    public async Task<Agendamento?> ObterAgendaId(int id)
+    {
+        return await _context.Agendamentos.FirstOrDefaultAsync(a => a.Id == id);
+    }
 
     public async Task<bool> ExisteConflito(int medicoId, DateTime dataHora)
     {
@@ -21,6 +30,32 @@ public class AgendamentoRepository : IAgendamentoRepository
     public async Task AdicionarAsync(Agendamento agendamento)
     {
         await _context.Agendamentos.AddAsync(agendamento);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task AtualizarAsync(Agendamento agendamento)
+    {
+        _context.Agendamentos.Update(agendamento);
+        await _context.SaveChangesAsync();
+    }
+
+    // buscar HorarioDisponivel por Id
+    public async Task<HorarioDisponivel?> ObterHorarioDisponivelPorIdAsync(int horarioId)
+    {
+        return await _context.HorarioDisponiveis.FirstOrDefaultAsync(h => h.Id == horarioId);
+    }
+
+    // Verifica se existe agendamento para um horário disponível
+    public async Task<bool> ExisteAgendamentoParaHorario(int horarioId)
+    {
+        var horario = await _context.HorarioDisponiveis.FirstOrDefaultAsync(h => h.Id == horarioId);
+        if (horario == null) return false;
+        return await _context.Agendamentos.AnyAsync(a => a.MedicoId == horario.MedicoId && a.DataHora == horario.Inicio);
+    }
+
+    public async Task DeleteAsync(Agendamento agendamento)
+    {
+        _context.Agendamentos.Remove(agendamento);
         await _context.SaveChangesAsync();
     }
 }

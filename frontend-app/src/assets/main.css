@@ -1,0 +1,48 @@
+@import './base.css';
+
+#app {
+  font-weight: normal;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+
+main {
+  margin-left: 220px; /* largura do sidebar */
+  min-height: 100vh;
+  width: calc(100vw - 220px);
+  background: transparent;
+  transition: margin-left 0.3s, width 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 1rem;
+}
+
+@media (max-width: 900px) {
+  main {
+    margin-left: 0;
+    width: 100vw;
+  }
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+}

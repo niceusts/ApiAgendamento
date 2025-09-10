@@ -8,4 +8,6 @@ public interface IPacienteRepository
     Task<IEnumerable<Paciente>> ObterTodosAsync();
     Task AdicionarAsync(Paciente paciente);
     Task AtualizarAsync(Paciente paciente);
+    Task<IEnumerable<Paciente>> ObterPorIdsAsyncList(List<int> ids);
+
 }
