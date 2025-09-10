@@ -11,15 +11,29 @@ const mostrarSidebar = computed(() => !esconderRotas.includes(route.name as stri
 </script>
 
 <template>
-  <div style="display: flex; min-height: 100vh;">
-    <Sidebar v-if="mostrarSidebar" />
-    <main style="flex: 1;">
+  <div>
+    <div v-if="mostrarSidebar" class="app-flex">
+      <Sidebar />
+      <main class="main-content">
+        <RouterView />
+      </main>
+    </div>
+    <div v-else class="login-center">
       <RouterView />
-    </main>
+    </div>
   </div>
 </template>
 
+
 <style scoped>
+.login-center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  width: 100vw;
+}
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -74,6 +88,32 @@ nav a:first-of-type {
 
     padding: 1rem 0;
     margin-top: 1rem;
+  }
+}
+
+.app-flex {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f8f9fa;
+}
+
+@media (max-width: 900px) {
+  .app-flex {
+    flex-direction: column;
+  }
+  .main-content {
+    margin-left: 0 !important;
+    width: 100vw !important;
+    padding: 0 !important;
   }
 }
 </style>

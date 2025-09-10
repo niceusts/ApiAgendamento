@@ -99,6 +99,7 @@ const handleRegister = async () => {
 
 <style scoped>
 .register-container {
+  min-width: 300px;
   max-width: 400px;
   margin: 60px auto;
   padding: 2rem;
