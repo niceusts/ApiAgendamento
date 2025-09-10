@@ -22,7 +22,7 @@
             <div class="sidebar-nome">{{ nomeUsuario }}</div>
             <div class="sidebar-tipo">{{ tipoUsuario }}</div>
             <li><router-link to="/dashboard">Dashboard</router-link></li>
-            <li><router-link to="/">Horários Disponiveis</router-link></li>
+            <li><router-link to="/ListaHorariosDisponiveis">Horários Disponiveis</router-link></li>
             <li><router-link to="/">Meus Agendamentos</router-link></li>
           </div>
           <button @click="logout">Sair</button>

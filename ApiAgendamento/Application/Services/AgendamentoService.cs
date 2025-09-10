@@ -18,14 +18,14 @@ public class AgendamentoService
     {
         var horario = await _agendamentoRepo.ObterHorarioDisponivelPorIdAsync(horarioId);
         if (horario == null)
-            throw new Exception("Hor·rio n„o encontrado.");
+            throw new Exception("Horario n√£o encontrado.");
 
         var conflito = await _agendamentoRepo.ExisteConflito(horario.MedicoId, horario.Inicio);
         if (conflito)
-            throw new Exception("J· existe um agendamento nesse hor·rio.");
+            throw new Exception("J√° existe um agendamento nesse hor√°rio.");
 
-        // regra de domÌnio
-        var agendamento = new Agendamento(horario.MedicoId, pacienteId, horario.Inicio);
+        // regra de dominio
+        var agendamento = new Agendamento(horario.MedicoId, pacienteId, horario.Inicio, horario.Id);
         await _agendamentoRepo.AdicionarAsync(agendamento);
     }
 
@@ -33,18 +33,18 @@ public class AgendamentoService
     {
         var agendamento = await _agendamentoRepo.ObterAgendaId(agendamentoId);
         if (agendamento == null)
-            throw new Exception("Agendamento n„o encontrado.");
+            throw new Exception("Agendamento n√£o encontrado.");
 
         var novoHorario = await _agendamentoRepo.ObterHorarioDisponivelPorIdAsync(novoHorarioId);
         if (novoHorario == null)
-            throw new Exception("Novo hor·rio n„o encontrado.");
+            throw new Exception("Novo hor√°rio n√£o encontrado.");
 
         var conflito = await _agendamentoRepo.ExisteConflito(novoHorario.MedicoId, novoHorario.Inicio);
         if (conflito)
-            throw new Exception("J· existe um agendamento nesse novo hor·rio.");
+            throw new Exception("J√° existe um agendamento nesse novo hor√°rio.");
 
-        // Atualiza os dados do agendamento via mÈtodo de domÌnio
-        agendamento.AtualizarMedicoEHorario(novoHorario.MedicoId, novoHorario.Inicio);
+        // Atualiza os dados do agendamento via m√©todo de dom√≠nio
+        agendamento.AtualizarMedicoEHorario(novoHorario.MedicoId, novoHorario.Inicio, novoHorario.Id);
 
         await _agendamentoRepo.AtualizarAsync(agendamento);
     }
@@ -53,7 +53,7 @@ public class AgendamentoService
     {
         var agendamento = await _agendamentoRepo.ObterAgendaId(agendamentoId);
         if (agendamento == null)
-            throw new Exception("Agendamento n„o encontrado.");
+            throw new Exception("Agendamento n√£o encontrado.");
         await _agendamentoRepo.DeleteAsync(agendamento);
     }
 }

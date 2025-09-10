@@ -1,3 +1,4 @@
+import type { HorarioDisponivel } from '@/models/HorarioDisponivel'
 // Modelo (entidade) para Medico
 export interface Medico {
   id: number;
@@ -11,4 +12,11 @@ export interface AgendaMedico {
   pacienteId: number;
   pacienteNome: string;
   pacienteEmail: string;
+}
+
+export interface MedicoComHorarios {
+  medicoId: number;
+  nome: string;
+  especialidade: string;
+  horariosDisponiveis: HorarioDisponivel[];
 }

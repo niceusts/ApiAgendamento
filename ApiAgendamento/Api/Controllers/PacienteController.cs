@@ -10,7 +10,7 @@ namespace ApiAgendamento.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-//[Authorize] // Exige autenticação JWT
+//[Authorize] // Exige autenticaÃ§Ã£o JWT
 public class PacienteController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -32,7 +32,8 @@ public class PacienteController : ControllerBase
             .Join(_context.Medicos,
                   a => a.MedicoId,
                   m => m.Id,
-                  (a, m) => new {
+                  (a, m) => new
+                  {
                       a.Id,
                       a.DataHora,
                       Medico = new { m.Id, m.Nome, m.Especialidade }
@@ -46,14 +47,17 @@ public class PacienteController : ControllerBase
     public async Task<IActionResult> ListarTodosHorariosDisponiveis()
     {
         var medicos = await _medicoRepository.ObterTodosAsync();
-        var result = medicos.Select(m => new {
+        var agendamentos = await _context.Agendamentos.ToListAsync();
+
+        var result = medicos.Select(m => new
+        {
             MedicoId = m.Id,
             Nome = m.Nome,
             Especialidade = m.Especialidade,
             HorariosDisponiveis = m.HorariosDisponiveis
+                .Where(h => !agendamentos.Any(a => a.MedicoId == m.Id && a.DataHora == h.Inicio))
                 .Select(h => new { h.Id, h.Inicio, h.Fim })
         });
         return Ok(result);
     }
-
 }

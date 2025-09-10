@@ -33,6 +33,9 @@ namespace ApiAgendamento.Migrations
                     b.Property<DateTime>("DataHora")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("HorarioId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("MedicoId")
                         .HasColumnType("integer");
 
@@ -77,11 +80,9 @@ namespace ApiAgendamento.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Especialidade")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -98,11 +99,9 @@ namespace ApiAgendamento.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
