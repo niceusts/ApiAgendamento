@@ -50,6 +50,8 @@ const handleLogin = async () => {
 <style scoped>
 
 .login-container {
+  min-width: 300px;
+  max-width: 400px;
   margin: 60px auto;
   padding: 2rem;
   border-radius: 8px;
