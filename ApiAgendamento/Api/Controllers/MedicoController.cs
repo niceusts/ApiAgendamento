@@ -3,7 +3,7 @@ using ApiAgendamento.Domain.Repositories;
 using ApiAgendamento.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ApiAgendamento.Api.Dtos;
+using ApiAgendamento.Application.Dtos;
 
 namespace ApiAgendamento.Api.Controllers;
 

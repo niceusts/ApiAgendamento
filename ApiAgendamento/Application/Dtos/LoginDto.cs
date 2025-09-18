@@ -1,4 +1,4 @@
-namespace ApiAgendamento.Api.Dtos;
+namespace ApiAgendamento.Application.Dtos;
 
 public class LoginDto
 {
